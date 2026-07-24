@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Fashion Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pay-panel { display: none; }
+    .pay-panel.active { display: flex; flex-direction: column; gap: 20px; }
+    .upi-apps { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .upi-app {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 12px 16px;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-ui);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .upi-app:hover, .upi-app.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.06); }
+    .upi-app-icon { font-size: 1.6rem; }
+    .emi-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .emi-card {
+      padding: 16px;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color var(--transition);
+      text-align: center;
+    }
+    .emi-card:hover, .emi-card.selected { border-color: var(--gold); }
+    .emi-month { font-family: var(--font-head); font-size: 1.3rem; color: var(--gold); }
+    .emi-amount { font-family: var(--font-ui); font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+    .emi-bank { font-family: var(--font-ui); font-size: 0.6rem; color: var(--muted); margin-top: 6px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .success-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+      padding: 40px;
+    }
+    .success-overlay.show { display: flex; }
+    .success-icon { font-size: 4rem; animation: bounceIn 0.5s both; }
+    @keyframes bounceIn {
+      from { transform: scale(0); opacity:0; }
+      to   { transform: scale(1); opacity:1; }
+    }
+  </style>
+</head>
+<body>
+<div id="navbar-root"></div>
+
+<div style="padding-top:72px;">
+  <div class="checkout-layout">
+
+    <!-- LEFT: Form -->
+    <div class="checkout-form-section">
+      <!-- Steps -->
+      <div class="step-indicator">
+        <div class="step done" id="step1">
+          <div class="step-circle">✓</div>
+          <div class="step-label">Cart</div>
+        </div>
+        <div class="step active" id="step2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Details</div>
+        </div>
+        <div class="step" id="step3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Payment</div>
+        </div>
+        <div class="step" id="step4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Confirm</div>
+        </div>
+      </div>
+
+      <!-- Section 1: Shipping Details -->
+      <div id="shippingSection">
+        <h2>Shipping Details</h2>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" id="firstName" placeholder="Aria" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" id="lastName" placeholder="Shah">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="email" placeholder="aria@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" id="phone" placeholder="+91 98765 43210">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address Line 1</label>
+            <input type="text" class="form-input" placeholder="Flat / Building Name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address Line 2</label>
+            <input type="text" class="form-input" placeholder="Street / Area">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input type="text" class="form-input" placeholder="Mumbai">
+            </div>
+            <div class="form-group">
+              <label class="form-label">PIN Code</label>
+              <input type="text" class="form-input" placeholder="400001">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">State</label>
+            <select class="form-select">
+              <option>Maharashtra</option>
+              <option>Delhi</option>
+              <option>Karnataka</option>
+              <option>Tamil Nadu</option>
+              <option>Gujarat</option>
+              <option>Uttar Pradesh</option>
+              <option>West Bengal</option>
+              <option>Rajasthan</option>
+            </select>
+          </div>
+
+          <!-- Delivery Option -->
+          <div>
+            <div class="form-label" style="margin-bottom:14px;">Delivery Method</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <label style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--charcoal);border:1px solid var(--gold);border-radius:4px;cursor:pointer;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <input type="radio" name="delivery" value="standard" checked style="accent-color:var(--gold);">
+                  <div>
+                    <div style="font-family:var(--font-ui);font-size:0.78rem;color:var(--cream);">Standard Delivery</div>
+                    <div style="font-family:var(--font-ui);font-size:0.65rem;color:var(--muted);">5–7 business days</div>
+                  </div>
+                </div>
+                <span style="font-family:var(--font-ui);font-size:0.8rem;font-weight:600;color:var(--gold);">FREE</span>
+              </label>
+              <label style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--charcoal);border:1px solid var(--border);border-radius:4px;cursor:pointer;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <input type="radio" name="delivery" value="express" style="accent-color:var(--gold);">
+                  <div>
+                    <div style="font-family:var(--font-ui);font-size:0.78rem;color:var(--cream);">Express Delivery</div>
+                    <div style="font-family:var(--font-ui);font-size:0.65rem;color:var(--muted);">1–2 business days</div>
+                  </div>
+                </div>
+                <span style="font-family:var(--font-ui);font-size:0.8rem;font-weight:600;color:var(--cream);">₹299</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary" onclick="goToPayment()">Continue to Payment →</button>
+        </div>
+      </div>
+
+      <!-- Section 2: Payment (hidden initially) -->
+      <div id="paymentSection" style="display:none;">
+        <h2>Payment</h2>
+
+        <!-- Method Tabs -->
+        <div class="payment-methods">
+          <div class="pay-method selected" onclick="selectPayMethod(this,'card')" title="Credit/Debit Card">
+            <span class="pay-method-icon">💳</span>
+            <span class="pay-method-label">Card</span>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod(this,'upi')" title="UPI">
+            <span class="pay-method-icon">📱</span>
+            <span class="pay-method-label">UPI</span>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod(this,'netbanking')" title="Net Banking">
+            <span class="pay-method-icon">🏦</span>
+            <span class="pay-method-label">Net Banking</span>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod(this,'emi')" title="EMI">
+            <span class="pay-method-icon">📅</span>
+            <span class="pay-method-label">EMI</span>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod(this,'wallet')" title="Wallet">
+            <span class="pay-method-icon">👛</span>
+            <span class="pay-method-label">Wallet</span>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod(this,'cod')" title="Cash on Delivery">
+            <span class="pay-method-icon">💵</span>
+            <span class="pay-method-label">COD</span>
+          </div>
+        </div>
+
+        <!-- Card Panel -->
+        <div class="pay-panel active" id="panel-card">
+          <div class="card-icons">
+            <span class="card-icon visa">VISA</span>
+            <span class="card-icon mc">MC</span>
+            <span class="card-icon amex">AMEX</span>
+            <span class="card-icon" style="color:var(--muted);">RuPay</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cardholder Name</label>
+            <input type="text" class="form-input" placeholder="ARIA SHAH">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-input" placeholder="1234  5678  9012  3456" maxlength="19" oninput="formatCard(this)">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Expiry Date</label>
+              <input type="text" class="form-input" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">CVV</label>
+              <input type="password" class="form-input" placeholder="•••" maxlength="4">
+            </div>
+          </div>
+          <label style="display:flex;align-items:center;gap:10px;font-family:var(--font-ui);font-size:0.75rem;color:var(--muted);cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--gold);"> Save card for future purchases
+          </label>
+        </div>
+
+        <!-- UPI Panel -->
+        <div class="pay-panel" id="panel-upi">
+          <div>
+            <div class="form-label" style="margin-bottom:12px;">Choose UPI App</div>
+            <div class="upi-apps">
+              <div class="upi-app selected" onclick="selectUpi(this)"><span class="upi-app-icon">📱</span>GPay</div>
+              <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">💜</span>PhonePe</div>
+              <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🧡</span>Paytm</div>
+              <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🔵</span>BHIM</div>
+              <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🟠</span>Amazon Pay</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Or Enter UPI ID</label>
+            <input type="text" class="form-input" placeholder="yourname@upi">
+          </div>
+        </div>
+
+        <!-- Net Banking Panel -->
+        <div class="pay-panel" id="panel-netbanking">
+          <div class="form-group">
+            <label class="form-label">Select Your Bank</label>
+            <select class="form-select">
+              <option value="">Choose a bank…</option>
+              <option>State Bank of India</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>Axis Bank</option>
+              <option>Kotak Mahindra Bank</option>
+              <option>Punjab National Bank</option>
+              <option>Bank of Baroda</option>
+              <option>Canara Bank</option>
+              <option>Yes Bank</option>
+              <option>IndusInd Bank</option>
+            </select>
+          </div>
+          <p style="font-family:var(--font-ui);font-size:0.72rem;color:var(--muted);">You will be redirected to your bank's secure portal to complete payment.</p>
+        </div>
+
+        <!-- EMI Panel -->
+        <div class="pay-panel" id="panel-emi">
+          <div class="form-group">
+            <label class="form-label">Select EMI Plan</label>
+            <div class="emi-options" id="emiOptions"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Card / Bank for EMI</label>
+            <select class="form-select">
+              <option>HDFC Credit Card</option>
+              <option>ICICI Credit Card</option>
+              <option>Axis Credit Card</option>
+              <option>SBI Credit Card</option>
+              <option>Bajaj Finserv</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Wallet Panel -->
+        <div class="pay-panel" id="panel-wallet">
+          <div class="upi-apps">
+            <div class="upi-app selected" onclick="selectUpi(this)"><span class="upi-app-icon">🧡</span>Paytm</div>
+            <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🟠</span>Amazon Pay</div>
+            <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🔵</span>Mobikwik</div>
+            <div class="upi-app" onclick="selectUpi(this)"><span class="upi-app-icon">🟢</span>Freecharge</div>
+          </div>
+          <p style="font-family:var(--font-ui);font-size:0.72rem;color:var(--muted);">Balance will be deducted from your linked wallet account.</p>
+        </div>
+
+        <!-- COD Panel -->
+        <div class="pay-panel" id="panel-cod">
+          <div style="padding:24px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:4px;">
+            <div style="font-family:var(--font-head);font-size:1.1rem;color:var(--white);margin-bottom:8px;">Cash on Delivery</div>
+            <p style="font-family:var(--font-ui);font-size:0.8rem;color:var(--muted);line-height:1.7;">Pay in cash when your order is delivered. An additional ₹49 COD handling fee applies. Please keep exact change ready.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button type="button" class="btn-outline" onclick="backToShipping()">← Back</button>
+          <button type="button" class="btn-primary" style="flex:1;" onclick="placeOrder()">Place Order ✦</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Order Summary -->
+    <div class="order-summary-card">
+      <div class="order-summary-title">Order Summary</div>
+      <div class="order-items" id="orderItems">
+        <div style="font-family:var(--font-ui);font-size:0.78rem;color:var(--muted);text-align:center;padding:20px 0;">Your cart is empty.</div>
+      </div>
+      <div class="promo-input-wrap">
+        <input type="text" class="promo-input" placeholder="Promo code" id="promoInput">
+        <button class="btn-dark btn-sm" onclick="applyPromo()">Apply</button>
+      </div>
+      <div class="order-totals">
+        <div class="order-row">
+          <span class="order-row-label">Subtotal</span>
+          <span class="order-row-value" id="summarySubtotal">₹0</span>
+        </div>
+        <div class="order-row">
+          <span class="order-row-label">Delivery</span>
+          <span class="order-row-value" style="color:#4caf50;">FREE</span>
+        </div>
+        <div class="order-row" id="discountRow" style="display:none;">
+          <span class="order-row-label">Discount</span>
+          <span class="order-row-value" style="color:#4caf50;" id="discountValue">-₹0</span>
+        </div>
+        <div class="order-row">
+          <span class="order-row-label">GST (18%)</span>
+          <span class="order-row-value" id="summaryGst">₹0</span>
+        </div>
+      </div>
+      <div class="order-total-row">
+        <span class="order-total-label">Total</span>
+        <span class="order-total-value" id="summaryTotal">₹0</span>
+      </div>
+      <div class="secure-badges">
+        <div class="secure-badge">🔒 SSL Secure</div>
+        <div class="secure-badge">✓ PCI Compliant</div>
+        <div class="secure-badge">↩ Easy Returns</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">🎉</div>
+  <h2 style="font-family:var(--font-head);font-size:2.4rem;color:var(--white);">Order Placed!</h2>
+  <p style="font-family:var(--font-ui);font-size:0.9rem;color:var(--muted);max-width:380px;line-height:1.7;">Thank you for your order. A confirmation email has been sent to your inbox. Your items will be on their way soon.</p>
+  <div style="font-family:var(--font-ui);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-top:8px;">
+    Order #FH-<span id="orderNum"></span>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:24px;">
+    <a href="index.html" class="btn-primary">Continue Shopping</a>
+    <button class="btn-outline" onclick="document.getElementById('successOverlay').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<script src="cart.js"></script>
+<script src="products.js"></script>
+<script>
+  let discount = 0;
+
+  function renderSummary() {
+    const cart = FashionHub.getCart();
+    const sub = FashionHub.getTotal();
+    const gst = Math.round(sub * 0.18);
+    const total = sub + gst - discount;
+
+    document.getElementById('summarySubtotal').textContent = '₹' + sub.toLocaleString();
+    document.getElementById('summaryGst').textContent = '₹' + gst.toLocaleString();
+    document.getElementById('summaryTotal').textContent = '₹' + Math.max(0,total).toLocaleString();
+
+    const orderItems = document.getElementById('orderItems');
+    if (cart.length === 0) {
+      orderItems.innerHTML = '<div style="font-family:var(--font-ui);font-size:0.78rem;color:var(--muted);text-align:center;padding:20px 0;">Your cart is empty. <a href="shop.html" style="color:var(--gold);">Shop now</a></div>';
+    } else {
+      orderItems.innerHTML = cart.map(item => `
+        <div class="order-item">
+          <img class="order-item-img" src="${item.img}" alt="${item.name}">
+          <div class="order-item-info">
+            <div class="order-item-name">${item.name}</div>
+            <div class="order-item-meta">Size: ${item.size} · Qty: ${item.qty}</div>
+          </div>
+          <div class="order-item-price">₹${(item.price * item.qty).toLocaleString()}</div>
+        </div>`).join('');
+    }
+
+    // EMI options
+    const emiGrid = document.getElementById('emiOptions');
+    if (emiGrid && total > 0) {
+      const plans = [3,6,9,12,18,24];
+      emiGrid.innerHTML = plans.map(m => `
+        <div class="emi-card" onclick="this.closest('.emi-options').querySelectorAll('.emi-card').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">
+          <div class="emi-month">${m} Mo</div>
+          <div class="emi-amount">₹${Math.round(total/m).toLocaleString()}/mo</div>
+          <div class="emi-bank">${m<=6?'0%':'Low'} Interest</div>
+        </div>`).join('');
+    }
+  }
+
+  function selectPayMethod(el, panel) {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+    el.classList.add('selected');
+    document.querySelectorAll('.pay-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + panel).classList.add('active');
+  }
+
+  function selectUpi(el) {
+    el.closest('.upi-apps').querySelectorAll('.upi-app').forEach(a => a.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function goToPayment() {
+    document.getElementById('shippingSection').style.display = 'none';
+    document.getElementById('paymentSection').style.display = 'block';
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('step2').querySelector('.step-circle').textContent = '✓';
+    document.getElementById('step3').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToShipping() {
+    document.getElementById('paymentSection').style.display = 'none';
+    document.getElementById('shippingSection').style.display = 'block';
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step2').classList.remove('done');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('step2').querySelector('.step-circle').textContent = '2';
+  }
+
+  function placeOrder() {
+    if (FashionHub.getCart().length === 0) {
+      showToast('Your cart is empty!');
+      return;
+    }
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step3').classList.add('done');
+    document.getElementById('step3').querySelector('.step-circle').textContent = '✓';
+    document.getElementById('step4').classList.add('active');
+    const num = Math.floor(Math.random() * 900000 + 100000);
+    document.getElementById('orderNum').textContent = num;
+    document.getElementById('successOverlay').classList.add('show');
+    localStorage.removeItem('fashionhub_cart');
+  }
+
+  function applyPromo() {
+    const code = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (code === 'STYLE20') {
+      discount = Math.round(FashionHub.getTotal() * 0.2);
+      document.getElementById('discountRow').style.display = 'flex';
+      document.getElementById('discountValue').textContent = '-₹' + discount.toLocaleString();
+      renderSummary();
+      showToast('Promo code applied! 20% off');
+    } else if (code === 'SAVE500') {
+      discount = 500;
+      document.getElementById('discountRow').style.display = 'flex';
+      document.getElementById('discountValue').textContent = '-₹500';
+      renderSummary();
+      showToast('₹500 discount applied!');
+    } else {
+      showToast('Invalid promo code. Try STYLE20 or SAVE500');
+    }
+  }
+
+  function formatCard(el) {
+    el.value = el.value.replace(/\D/g,'').replace(/(.{4})/g,'$1  ').trim().slice(0,19);
+  }
+  function formatExpiry(el) {
+    el.value = el.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1 / $2').slice(0,7);
+  }
+
+  document.addEventListener('DOMContentLoaded', renderSummary);
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections — Fashion Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .collection-hero {
+      height: 65vh;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .collection-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.5);
+      transition: transform 0.6s ease, filter 0.6s;
+    }
+    .collection-hero:hover img { transform: scale(1.04); filter: brightness(0.35); }
+    .collection-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 40px;
+      width: 100%;
+    }
+    .col-eyebrow {
+      font-family: var(--font-ui);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .col-name {
+      font-family: var(--font-head);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .col-count {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      color: rgba(245,240,232,0.6);
+      letter-spacing: 0.1em;
+    }
+    .col-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(10,10,10,0.4);
+      backdrop-filter: blur(4px);
+      transition: background var(--transition), color var(--transition);
+    }
+    .col-cta:hover { background: var(--gold); color: var(--black); }
+    .col-grid-main {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .col-grid-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .col-small {
+      height: 320px;
+    }
+    .col-small img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.5);
+      transition: transform 0.6s ease;
+    }
+    .col-small:hover img { transform: scale(1.05); filter: brightness(0.35); }
+    .col-small .col-name { font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+<div id="navbar-root"></div>
+
+<div class="page-wrapper">
+  <section class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Curated Seasons</div>
+      <h1 class="section-title">Our Collections</h1>
+      <p class="section-sub">Each collection tells a story — discover yours.</p>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="col-grid-main">
+      <div class="collection-hero" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&q=80" alt="Noir Season">
+        <div class="collection-hero-content">
+          <div class="col-eyebrow">SS 2025</div>
+          <div class="col-name">Noir Season</div>
+          <div class="col-count">48 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+      <div class="collection-hero" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80" alt="Golden Hours">
+        <div class="collection-hero-content">
+          <div class="col-eyebrow">AW 2024</div>
+          <div class="col-name">Golden Hours</div>
+          <div class="col-count">36 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-grid-side">
+      <div class="collection-hero col-small" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80" alt="Ivory Mornings">
+        <div class="collection-hero-content" style="padding:24px 28px;">
+          <div class="col-eyebrow">Resort 2025</div>
+          <div class="col-name">Ivory Mornings</div>
+          <div class="col-count">22 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+      <div class="collection-hero col-small" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=700&q=80" alt="Urban Luxe">
+        <div class="collection-hero-content" style="padding:24px 28px;">
+          <div class="col-eyebrow">Pre-Fall 2025</div>
+          <div class="col-name">Urban Luxe</div>
+          <div class="col-count">31 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+      <div class="collection-hero col-small" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1596753053897-4b15e97a7e43?w=700&q=80" alt="Heirloom Edit">
+        <div class="collection-hero-content" style="padding:24px 28px;">
+          <div class="col-eyebrow">Capsule</div>
+          <div class="col-name">Heirloom Edit</div>
+          <div class="col-count">18 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+      <div class="collection-hero col-small" onclick="location.href='shop.html'">
+        <img src="https://images.unsplash.com/photo-1486218119243-13301429de20?w=700&q=80" alt="Active Form">
+        <div class="collection-hero-content" style="padding:24px 28px;">
+          <div class="col-eyebrow">Sport Luxe</div>
+          <div class="col-name">Active Form</div>
+          <div class="col-count">27 Pieces</div>
+          <a class="col-cta" href="shop.html">Explore →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured from collections -->
+  <section class="section" style="background:var(--charcoal);border-top:1px solid var(--border);">
+    <div class="section-header">
+      <div class="section-eyebrow">From The Collections</div>
+      <h2 class="section-title">Standout Pieces</h2>
+    </div>
+    <div class="products-grid" id="collectionsGrid"></div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="footer-logo">FASHION HUB</div><p class="footer-desc">Curating luxury fashion for the modern individual.</p></div>
+    <div class="footer-col"><h4>Navigate</h4><div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="about.html">About</a><a href="contact.html">Contact</a></div></div>
+    <div class="footer-col"><h4>Support</h4><div class="footer-links"><a href="#">Size Guide</a><a href="#">Shipping</a><a href="#">Returns</a></div></div>
+    <div class="footer-col"><h4>Legal</h4><div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+  </div>
+  <div class="footer-bottom"><p class="footer-copy">© 2025 Fashion Hub. All rights reserved.</p></div>
+</footer>
+
+<script src="cart.js"></script>
+<script src="products.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('collectionsGrid');
+    const luxury = PRODUCTS.filter(p => ['Luxury','Exclusive','New'].includes(p.badge)).slice(0,4);
+    grid.innerHTML = luxury.map(p => productCard(p)).join('');
+  });
+</script>
+</body>
+</html>

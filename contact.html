@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Fashion Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="navbar-root"></div>
+
+<div class="page-wrapper">
+  <section class="section">
+    <div class="section-header" style="margin-bottom:72px;">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h1 class="section-title">We'd Love to Hear From You</h1>
+      <p class="section-sub">Whether it's a styling question, order query, or partnership opportunity.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Info -->
+      <div>
+        <h2>Let's connect</h2>
+        <p>Our team of style advisors and customer care specialists are on hand to help you find the perfect piece or resolve any concern you might have.</p>
+
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail-text">
+            <strong>Our Studio</strong>
+            <span>12 Couture Lane, Fashion District<br>Mumbai, MH 400001, India</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div class="contact-detail-text">
+            <strong>Phone</strong>
+            <span>+91 98765 43210</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail-text">
+            <strong>Email</strong>
+            <span>hello@fashionhub.in</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-detail-text">
+            <strong>Hours</strong>
+            <span>Mon–Sat: 10am – 7pm IST<br>Sun: 12pm – 5pm IST</span>
+          </div>
+        </div>
+
+        <div style="margin-top:40px;">
+          <div style="font-family:var(--font-ui);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Follow Us</div>
+          <div class="social-links">
+            <a class="social-link" href="#" title="Instagram">📷</a>
+            <a class="social-link" href="#" title="Facebook">👍</a>
+            <a class="social-link" href="#" title="Twitter">🐦</a>
+            <a class="social-link" href="#" title="Pinterest">📌</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form class="contact-form" onsubmit="handleContact(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Aria" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Shah" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="aria@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone (Optional)</label>
+          <input type="tel" class="form-input" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Topic</label>
+          <select class="form-select">
+            <option value="">Select a topic…</option>
+            <option>Order Query</option>
+            <option>Styling Advice</option>
+            <option>Returns & Exchanges</option>
+            <option>Partnership / Press</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Message</label>
+          <textarea class="form-textarea" placeholder="Tell us how we can help you…" required></textarea>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-top:-8px;">
+          <input type="checkbox" id="newsletter" style="margin-top:4px;accent-color:var(--gold);">
+          <label for="newsletter" style="font-family:var(--font-ui);font-size:0.75rem;color:var(--muted);cursor:pointer;line-height:1.5;">Subscribe to our newsletter for new arrivals and exclusive offers.</label>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top:8px;align-self:flex-start;">Send Message ✦</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Map Placeholder -->
+  <div style="height:320px;background:var(--charcoal);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+    <div style="font-size:2.5rem;">📍</div>
+    <div style="font-family:var(--font-head);font-size:1.2rem;color:var(--muted);">12 Couture Lane, Fashion District, Mumbai</div>
+    <a href="https://maps.google.com" target="_blank" class="btn-outline btn-sm">Open in Maps</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="footer-logo">FASHION HUB</div><p class="footer-desc">Curating luxury fashion for the modern individual.</p></div>
+    <div class="footer-col"><h4>Navigate</h4><div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="about.html">About</a><a href="contact.html">Contact</a></div></div>
+    <div class="footer-col"><h4>Support</h4><div class="footer-links"><a href="#">Size Guide</a><a href="#">Shipping</a><a href="#">Returns</a></div></div>
+    <div class="footer-col"><h4>Legal</h4><div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+  </div>
+  <div class="footer-bottom"><p class="footer-copy">© 2025 Fashion Hub. All rights reserved.</p></div>
+</footer>
+
+<script src="cart.js"></script>
+<script>
+  function handleContact(e) {
+    e.preventDefault();
+    window.showToast && showToast('Message sent! We\'ll be in touch within 24 hours.');
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
